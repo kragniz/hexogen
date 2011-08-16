@@ -1,0 +1,9 @@
+[Tile Definition]
+#A single line passing across a hexagon
+Name=Simple line
+Side-1=-
+Side-2=1
+Side-3=-
+Side-4=-
+Side-5=1
+Side-6=-

@@ -1,0 +1,9 @@
+[Tile Definition]
+#A single hexagon
+Name=Small one way bend
+Side-1=-
+Side-2=-
+Side-3=1
+Side-4=-
+Side-5=1
+Side-6=-
