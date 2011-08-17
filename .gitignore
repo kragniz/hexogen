@@ -1,3 +1,5 @@
 #ignore python bytecode
 *.pyc
+#also backup files
+*~
 #hexagons.svg
