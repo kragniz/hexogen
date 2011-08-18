@@ -1,1 +1,14 @@
-Actually, don't
+Actually, don't.
+
+This work is based on ideas contained in a thesis (Image Texture Tools) by Paul
+Francis Harrison (Monash University), described in chapter 7 - "Declarative
+texture synthesis"
+
+Quoting from said chapter: "The objective is to find a connected structure
+composed only of pieces from a specified set. Pieces are based on squares or
+hexagons with edges of various types. An edge of a certain type may only abut
+edges of some other certain type. Some edges of a piece may be “empty”, and
+these edges do not need to abut another piece. All other edges must abut an
+appropriate opposite edge. Pieces may be rotated, but not flipped."
+
+This software was started in early August 2011 and is Free Software (GPL 3)
