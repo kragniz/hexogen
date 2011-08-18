@@ -82,7 +82,6 @@ class SvgWriter(object):
         fill: black;
         text-anchor: middle;
       }}
-      
     ]]></style>
   </defs>
   <g transform="translate({offsetX}, {offsetY}) rotate({angle})">
@@ -168,7 +167,7 @@ class SvgWriter(object):
                         s += 'M ' + point(shapePoints[i][0]) + ' L '
                         s += point(shapePoints[i][1])
                         
-                        firstSide = i
+                        firstSide = i+1
                         lastPlottedSide = i
                         if plotEndNext == 1: plotEndNext = 2
                         print 'face', i, 'is at the start'
@@ -176,9 +175,19 @@ class SvgWriter(object):
                     else:
                         if plotEndNext == 2:
                             print 'face', i, 'is at the end'
+                            s += ' C ' + point(shapeControlPoints[lastPlottedSide][1]) + ' '
+                            j = i
+                            while (not shapePoints.has_key(j)) and j <= 5:
+                                j += 1
+                            s += point(shapeControlPoints[j][0]) + ' '
+                            s +=  point(shapePoints[j][0])
+                            
+                            s += ' L ' + point(shapePoints[i][0]) + point(shapePoints[i][1])
+                            
                             s += ' C ' + point(shapeControlPoints[i][1]) + ' '
-                            s += point(shapeControlPoints[firstSide][0]) + ' '
-                            s += point(shapePoints[firstSide][0]) + ' z '
+                            s += point(shapeControlPoints[firstSide-1][0]) + ' '
+                            s +=  point(shapePoints[firstSide-1][0]) + ' '
+                            
                         else:
                             #side must be 'normal' (not at the beginning or end)
                             print 'face', i, 'is in the middle'
@@ -190,12 +199,13 @@ class SvgWriter(object):
                             
                             lastPlottedSide = i
                             if plotEndNext == 1: plotEndNext = 2
+                            
                     
             tilePoints = s #do this to keep the above (more) readable
             print tilePoints
             x, y = hexagon.cartesianCoordinates()
             self.tiles += [self.tileXml.format(points=tilePoints, x=x, y=y,
-                                               tileName=hexagon.shape().name())]
+                                               tileName=hexagon.shape().name() + ' (' + str(len(hexagon.shape())) + ' sides)')]
             
         # round them floats! (2 d.p.)
         hexagonPoints = tuple( [ str( (format(p[0], '.2f'), format(p[1], '.2f')) )[1:-1] for p in hexagon.getVertices() ] ) # Convert a tuple containing 6 

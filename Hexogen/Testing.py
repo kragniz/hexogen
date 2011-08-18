@@ -94,9 +94,9 @@ class Test(object):
         
     def shapePoints(self):
         a = ArrayOfHexagons()
-        a.setRadius(25)
+        a.setRadius(40)
         a.addHexagon(0, 0)
-        a.populate(6)
+        a.populate(2)
 
         h = Shape()
         h.loadFromFile('hexagon.tile')
@@ -119,6 +119,7 @@ class Test(object):
         shapes = ShapeManager(h, b, s)
         a.hexagon(-2,0).addShape(h)
         a.hexagon(0,0).addShape(b)
+        #a.hexagon(0,0).shape().rotate(5)
         a.hexagon(-1,-1).addShape(b)
         a.hexagon(-1,-1).shape().rotate(1)
         a.hexagon(2,0).addShape(h)
@@ -126,7 +127,7 @@ class Test(object):
         a.hexagon(4,0).addShape(p)
         
         svg = SvgWriter()
-        svg.offset(400,400)
+        svg.offset(200,200)
         svg.rotate(0)
         for coordinates in a:
             svg.addHexagon(a.hexagon(coordinates[0], coordinates[1]))

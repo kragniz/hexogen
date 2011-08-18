@@ -2,4 +2,4 @@
 *.pyc
 #also backup files
 *~
-hexagons.svg
+*.svg

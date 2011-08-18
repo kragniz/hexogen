@@ -107,8 +107,8 @@ class Shape(object):
         '''Return the vertices making up this shape'''
         points = {}
         controlPoints = {}
-        d1 = 4
-        d2 = 4
+        d1 = 5
+        d2 = 25
         r = self._radius
         
         #two points on the edge of a hexagon, the top one and the next one along (clockwise)
@@ -140,7 +140,7 @@ class Shape(object):
         if self._matchableSides[2] != '-':
             m1, m2 = (x2, -y2), (x1, -y1)
             xc1, yc1 = m1[0] - d2 * sin(pi/6),  m1[1] + d2 * cos(pi/6)
-            xc2, yc2 = m2[0] - d2 * sin(pi/6),  m1[1] + d2 * cos(pi/6)
+            xc2, yc2 = m2[0] - d2 * sin(pi/6),  m1[1] + d2 * cos(pi/6) - d1 #wtf, why does this work?
             points[2] = ( m1, m2 )
             controlPoints[2] = ( (xc1, yc1), (xc2, yc2) )
             
