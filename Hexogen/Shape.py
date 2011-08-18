@@ -109,7 +109,7 @@ class Shape(object):
         controlPoints = {}
         r = self._radius
         d1 = 0.15 * r
-        d2 = 3.25 * d1
+        d2 = 2 * d1
         
         #two points on the edge of a hexagon, the top one and the next one along (clockwise)
         x1, y1 = 0, r

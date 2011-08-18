@@ -72,7 +72,7 @@ class SvgWriter(object):
       }}      
       
       path.shape {{
-        fill: red;
+        fill: #FF4040;
         stroke: black;
         stroke-width: 2;
       }}      
