@@ -112,14 +112,18 @@ class Test(object):
         
         c = Shape()
         c.loadFromFile('cross.tile')
+        
+        p = Shape()
+        p.loadFromFile('prang.tile')
 
         shapes = ShapeManager(h, b, s)
         a.hexagon(-2,0).addShape(h)
         a.hexagon(0,0).addShape(b)
         a.hexagon(-1,-1).addShape(b)
         a.hexagon(-1,-1).shape().rotate(1)
-        a.hexagon(2,0).addShape(t)
+        a.hexagon(2,0).addShape(h)
         a.hexagon(1,1).addShape(c)
+        a.hexagon(4,0).addShape(p)
         
         svg = SvgWriter()
         svg.offset(400,400)

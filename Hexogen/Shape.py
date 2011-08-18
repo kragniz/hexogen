@@ -33,6 +33,11 @@ class Shape(object):
     def __str__(self):
         '''Return a nice string representation of the shape'''
         return self._name + ' : [' + ''.join(self._matchableSides) + ']'
+    
+    
+    def __len__(self):
+        '''Return the number of non-empty faces on this shape'''
+        return len([c for c in self._matchableSides if c != '-'])
         
         
     def side(self, side):
@@ -94,7 +99,7 @@ class Shape(object):
             
             
     def setRadius(self, radius):
-        '''Set the radius of teh shape'''
+        '''Set the radius of the shape'''
         self._radius = radius
             
             
@@ -102,7 +107,7 @@ class Shape(object):
         '''Return the vertices making up this shape'''
         points = {}
         controlPoints = {}
-        d1 = 7
+        d1 = 4
         d2 = 4
         r = self._radius
         

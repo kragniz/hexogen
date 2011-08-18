@@ -132,6 +132,12 @@ class SvgWriter(object):
     def _dp(self, f):
         '''Round the float f to 2 d.p. and return the string of this value'''
         return format(f, '.2f')
+    
+    
+    def _point(self, p):
+        '''Return a nice string rep. of a two value tuple, rounded to 2 d.p.
+        (324.344434, 23.536535) => "324.34, 23.54"'''
+        return str( (self._dp(p[0]), self._dp(p[1])) )[1:-1].replace("'", '')
 
 
     def addHexagon(self, hexagon):
@@ -141,24 +147,52 @@ class SvgWriter(object):
         else:
             hexagonType = 'white'
             
-        dp = self._dp #namespacing nastiness, bind the class function _dp to the local function dp
+        point = self._point
         if hexagon.hasShape():
             s= ''
-            firstPoint = True
-            lastPoint = False
+            firstSide = -1
+            plotEndNext = 0
+            numberOfSides = len(hexagon.shape())
+            sidesPlotted = 0
+            lastPlottedSide = None
             shapePoints, shapeControlPoints = hexagon.shape().getVertices()
             for i in range(6):
-                #makes this look a bit nicer, though
-                #s += dp(side[0][0]) + ', ' + dp(side[0][1]) + ' L ' + dp(side[1][0]) + ', ' + dp(side[1][1]) + ' L '
                 if shapePoints.has_key(i):
-                    if firstPoint:
-                        s += str( shapePoints[i][0] )[1:-1] + ' L '
-                        s += str( shapePoints[i][1] )[1:-1]
-                        firstPoint = False
-                    print 'shapePoints', shapePoints[i]
-                    print 'shapeControlPoints', shapeControlPoints[i]
+                    sidesPlotted += 1
+                    if sidesPlotted+1 == numberOfSides:
+                            #next side must be the last one
+                            plotEndNext = 1
+                            
+                    if not (firstSide + 1):
+                        #must be the first side
+                        s += 'M ' + point(shapePoints[i][0]) + ' L '
+                        s += point(shapePoints[i][1])
+                        
+                        firstSide = i
+                        lastPlottedSide = i
+                        if plotEndNext == 1: plotEndNext = 2
+                        print 'face', i, 'is at the start'
+                        
+                    else:
+                        if plotEndNext == 2:
+                            print 'face', i, 'is at the end'
+                            s += ' C ' + point(shapeControlPoints[i][1]) + ' '
+                            s += point(shapeControlPoints[firstSide][0]) + ' '
+                            s += point(shapePoints[firstSide][0]) + ' z '
+                        else:
+                            #side must be 'normal' (not at the beginning or end)
+                            print 'face', i, 'is in the middle'
+                            
+                            s += ' C ' +  point(shapeControlPoints[lastPlottedSide][1] ) + ' '
+                            s += point(shapeControlPoints[i][0]) + ' '
+                            s += point(shapePoints[i][0]) + ' L '
+                            s += point(shapePoints[i][1])
+                            
+                            lastPlottedSide = i
+                            if plotEndNext == 1: plotEndNext = 2
                     
-            tilePoints = 'M ' + s[:-1] + ' z'
+            tilePoints = s #do this to keep the above (more) readable
+            print tilePoints
             x, y = hexagon.cartesianCoordinates()
             self.tiles += [self.tileXml.format(points=tilePoints, x=x, y=y,
                                                tileName=hexagon.shape().name())]
