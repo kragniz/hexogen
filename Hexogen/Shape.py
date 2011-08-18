@@ -28,6 +28,7 @@ class Shape(object):
         self._matchableSides = sideData
         self._name = name
         self._radius = radius
+        self._colour = None
         
         
     def __str__(self):
@@ -48,6 +49,11 @@ class Shape(object):
     def sides(self):
         '''Return a tuple containing side data'''
         return self._matchableSides
+    
+    
+    def color(self):
+        '''Return the colour of the shape (using the American spelling for consistency with CSS)'''
+        return self._colour
         
         
     def loadFromFile(self, tileFileName):
@@ -73,6 +79,19 @@ class Shape(object):
             if data[i].lower().startswith('name'):
                 self._name = data[i][5:]
                 
+            if data[i].lower().startswith('color'):
+                nonHexDigits = 0
+                hexDigits = '123456789ABCDEF'
+                for c in data[i][6:].upper():
+                    if c not in hexDigits:
+                        nonHexDigits += 1
+                if nonHexDigits > 0:
+                    #It's not hex.
+                    self._colour = data[i][6:]
+                else:
+                    #must be hex, lets add a hash in front (for CSS stuff)
+                    self._colour = '#' + data[i][6:]
+                        
             if data[i].lower().startswith('side-'):
                 foundSides[int(data[i][5])] = data[i][ data[i].index('=') + 1 :].strip()
                 
@@ -108,8 +127,9 @@ class Shape(object):
         points = {}
         controlPoints = {}
         r = self._radius
-        d1 = 0.15 * r
-        d2 = 2 * d1
+        d1 = 0.15 * r #diameter of the extrusions from the shape
+        d2 = 2 * d1 #length of the control points
+        d3 = 6 #length of triangle extending out of one-way sides
         
         #two points on the edge of a hexagon, the top one and the next one along (clockwise)
         x1, y1 = 0, r
@@ -119,50 +139,53 @@ class Shape(object):
         #the two points d1 units away from the midpoint
         x1, y1 = xm - d1 * cos(pi/6), ym + d1 * sin(pi/6)
         x2, y2 = xm + d1 * cos(pi/6), ym - d1 * sin(pi/6)
+        #the sticking in and sticking out bits for one-way sides
+        xso, yso = (xm + d3 * cos(pi/3), ym + d3 * sin(pi/3)) #sticky-out
+        xsi, ysi = (xm - d3 * cos(pi/3), ym - d3 * sin(pi/3)) #sticky-in
         print self._matchableSides
         
-        if self._matchableSides[0] != '-': #FIXME TODO make this find the type of side etc
-            #main two points
-            m1, m2 = (x1, y1), (x2, y2)
+        if self._matchableSides[0] != '-':
+            #main two points, with the 
+            m1, m2, m3, m4 = (x1, y1), (x2, y2), (xso, yso), (xsi, ysi)
             #control points for some nice smooth lines
             xc1, yc1 = m1[0] - d2 * sin(pi/6),  m1[1] - d2 * cos(pi/6)
             xc2, yc2 = m2[0] - d2 * sin(pi/6),  m2[1] - d2 * cos(pi/6)
-            points[0] = ( m1, m2 )
+            points[0] = ( m1, m2, m3, m4 )
             controlPoints[0] = ( (xc1, yc1), (xc2, yc2) )
             
         if self._matchableSides[1] != '-':
-            m1, m2 = (r * cos(pi/6), d1), (r * cos(pi/6), -d1)
+            m1, m2, m3, m4 = (r * cos(pi/6), d1), (r * cos(pi/6), -d1), (r * cos(pi/6) + d3, 0), (r * cos(pi/6) - d3, 0)
             xc1, yc1 = m1[0] - d2,  m1[1]
             xc2, yc2 = m2[0] - d2,  m2[1]
-            points[1] = ( m1, m2 )
+            points[1] = ( m1, m2, m3, m4 )
             controlPoints[1] = ( (xc1, yc1), (xc2, yc2) )
             
         if self._matchableSides[2] != '-':
-            m1, m2 = (x2, -y2), (x1, -y1)
+            m1, m2, m3, m4 = (x2, -y2), (x1, -y1), (xso, -yso), (xsi, -ysi)
             xc1, yc1 = m1[0] - d2 * sin(pi/6),  m1[1] + d2 * cos(pi/6)
             xc2, yc2 = m2[0] - d2 * sin(pi/6),  m1[1] + d2 * cos(pi/6) - d1 #wtf, why does this work?
-            points[2] = ( m1, m2 )
+            points[2] = ( m1, m2, m3, m4 )
             controlPoints[2] = ( (xc1, yc1), (xc2, yc2) )
             
         if self._matchableSides[3] != '-':
-            m1, m2 = (-x1, -y1), (-x2, -y2)
+            m1, m2, m3, m4 = (-x1, -y1), (-x2, -y2), (-xso, -yso), (-xsi, -ysi)
             xc1, yc1 = m1[0] + d2 * sin(pi/6),  m1[1] + d2 * cos(pi/6)
             xc2, yc2 = m2[0] + d2 * sin(pi/6),  m2[1] + d2 * cos(pi/6)
-            points[3] = ( m1, m2 )
+            points[3] = ( m1, m2, m3, m4 )
             controlPoints[3] = ( (xc1, yc1), (xc2, yc2) )
         
         if self._matchableSides[4] != '-':
-            m1, m2 = (-r * cos(pi/6), -d1), (-r * cos(pi/6), d1)
+            m1, m2, m3, m4 = (-r * cos(pi/6), -d1), (-r * cos(pi/6), d1), (-r * cos(pi/6) - d3, 0), (-r * cos(pi/6) + d3, 0)
             xc1, yc1 = m1[0] + d2,  m1[1]
             xc2, yc2 = m2[0] + d2,  m2[1]
-            points[4] = ( m1, m2 )
+            points[4] = ( m1, m2, m3, m4 )
             controlPoints[4] = ( (xc1, yc1), (xc2, yc2) )
             
         if self._matchableSides[5] != '-':
-            m1, m2 = (-x2, y2), (-x1, y1)
+            m1, m2, m3, m4 = (-x2, y2), (-x1, y1), (-xso, yso), (-xsi, ysi)
             xc1, yc1 = m1[0] + d2 * sin(pi/6),  m1[1] - d2 * cos(pi/6)
             xc2, yc2 = m2[0] + d2 * sin(pi/6),  m2[1] - d2 * cos(pi/6)
-            points[5] = ( m1, m2 )
+            points[5] = ( m1, m2, m3, m4 )
             controlPoints[5] = ( (xc1, yc1), (xc2, yc2) )
             
         if controlPoints:
@@ -173,8 +196,3 @@ class Shape(object):
     
     def name(self):
         return self._name
-            
-            
-            
-            
-            

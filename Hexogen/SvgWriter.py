@@ -74,7 +74,7 @@ class SvgWriter(object):
       path.shape {{
         fill: #FF4040;
         stroke: black;
-        stroke-width: 2;
+        stroke-width: 1.5;
       }}      
       
       text {{
@@ -96,7 +96,7 @@ class SvgWriter(object):
 '''
         self.tileXml = '''        <g transform="translate({x:0.2f}, {y:0.2f})">
           <path id="{tileName}"
-                class= "shape"
+                class= "shape"{optionalColour}
                 d="{points}"/>
           <text font-size="3">
             {tileName}
@@ -157,6 +157,20 @@ class SvgWriter(object):
             shapePoints, shapeControlPoints = hexagon.shape().getVertices()
             for i in range(6):
                 if shapePoints.has_key(i):
+                    #find what kind of side this is
+                    if hexagon.shape().sides()[i].isdigit():
+                        sideType = 0
+                    else:
+                        if hexagon.shape().sides()[i].islower():
+                            sideType = 1
+                        else:
+                            sideType = 2
+                    #choose the point to use for the sticky-in/out bits
+                    if sideType == 0:
+                        trianglePoint = '' #the face needs to be flat, so no point is needed
+                    else:
+                        trianglePoint = point(shapePoints[i][sideType+1])
+                                
                     sidesPlotted += 1
                     if sidesPlotted+1 == numberOfSides:
                             #next side must be the last one
@@ -165,7 +179,8 @@ class SvgWriter(object):
                     if not (firstSide + 1):
                         #must be the first side
                         tilePoints += ' '.join(['M', point(shapePoints[i][0]),
-                                              'L', point(shapePoints[i][1])])
+                                                'L', trianglePoint,
+                                                point(shapePoints[i][1])])
                         firstSide = i+1
                         lastPlottedSide = i
                         if plotEndNext == 1: plotEndNext = 2
@@ -174,25 +189,33 @@ class SvgWriter(object):
                         if plotEndNext == 2:
                             #must be the last face
                             tilePoints += ' '.join([' C', point(shapeControlPoints[lastPlottedSide][1]),
-                                                  point(shapeControlPoints[i][0]),
-                                                  point(shapePoints[i][0]),
-                                                  'L', point(shapePoints[i][0]),
-                                                  point(shapePoints[i][1]),
-                                                  'C', point(shapeControlPoints[i][1]),
-                                                  point(shapeControlPoints[firstSide-1][0]),
-                                                  point(shapePoints[firstSide-1][0]), 'z'])
+                                                    point(shapeControlPoints[i][0]),
+                                                    point(shapePoints[i][0]),
+                                                    'L', point(shapePoints[i][0]),
+                                                    trianglePoint,
+                                                    point(shapePoints[i][1]),
+                                                    'C', point(shapeControlPoints[i][1]),
+                                                    point(shapeControlPoints[firstSide-1][0]),
+                                                    point(shapePoints[firstSide-1][0]), 'z'])
                         else:
                             #side must be 'normal' (not at the beginning or end)
                             tilePoints += ' '.join([' C', point(shapeControlPoints[lastPlottedSide][1] ),
-                                                  point(shapeControlPoints[i][0]),
-                                                  point(shapePoints[i][0]), 'L',
-                                                  point(shapePoints[i][1])])
+                                                    point(shapeControlPoints[i][0]),
+                                                    point(shapePoints[i][0]), 'L',
+                                                    trianglePoint,
+                                                    point(shapePoints[i][1])])
                             lastPlottedSide = i
                             if plotEndNext == 1: plotEndNext = 2
                             
             x, y = hexagon.cartesianCoordinates()
+            if hexagon.shape().color():
+                colourStyle = '\n                style="fill: %s"' % hexagon.shape().color()
+            else:
+                colourStyle = ''
+                
             self.tiles += [self.tileXml.format(points=tilePoints, x=x, y=y,
-                                               tileName=hexagon.shape().name() + ' (' + str(len(hexagon.shape())) + ' sides)')]
+                                               tileName=hexagon.shape().name() + ' (' + str(len(hexagon.shape())) + ' sides)',
+                                               optionalColour = colourStyle)]
             
         # round them floats! (2 d.p.)
         hexagonPoints = tuple( [ str( (format(p[0], '.2f'), format(p[1], '.2f')) )[1:-1] for p in hexagon.getVertices() ] ) # Convert a tuple containing 6 

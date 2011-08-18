@@ -1,9 +1,9 @@
 [Tile Definition]
 #A single hexagon
 Name=Hexagon
-Side-1=1
-Side-2=1
-Side-3=1
-Side-4=1
-Side-5=1
-Side-6=1
+Side-1=a
+Side-2=A
+Side-3=a
+Side-4=A
+Side-5=a
+Side-6=A
