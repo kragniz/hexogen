@@ -121,10 +121,12 @@ class Test(object):
         a.hexagon(0,0).addShape(b)
         #a.hexagon(0,0).shape().rotate(5)
         a.hexagon(-1,-1).addShape(b)
-        a.hexagon(-1,-1).shape().rotate(1)
+        a.hexagon(-1,-1).shape().rotate(3)
         a.hexagon(2,0).addShape(h)
         a.hexagon(1,1).addShape(c)
         a.hexagon(4,0).addShape(p)
+        a.hexagon(1,-1).addShape(p)
+        a.hexagon(1,-1).shape().rotate(5)
         
         svg = SvgWriter()
         svg.offset(200,200)

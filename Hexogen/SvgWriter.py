@@ -73,8 +73,8 @@ class SvgWriter(object):
       
       path.shape {{
         fill: red;
-        stroke: white;
-        stroke-width: 0.5;
+        stroke: black;
+        stroke-width: 2;
       }}      
       
       text {{
@@ -148,7 +148,7 @@ class SvgWriter(object):
             
         point = self._point
         if hexagon.hasShape():
-            s= ''
+            tilePoints = ''
             firstSide = -1
             plotEndNext = 0
             numberOfSides = len(hexagon.shape())
@@ -164,45 +164,32 @@ class SvgWriter(object):
                             
                     if not (firstSide + 1):
                         #must be the first side
-                        s += 'M ' + point(shapePoints[i][0]) + ' L '
-                        s += point(shapePoints[i][1])
-                        
+                        tilePoints += ' '.join(['M', point(shapePoints[i][0]),
+                                              'L', point(shapePoints[i][1])])
                         firstSide = i+1
                         lastPlottedSide = i
                         if plotEndNext == 1: plotEndNext = 2
-                        print 'face', i, 'is at the start'
                         
                     else:
                         if plotEndNext == 2:
-                            print 'face', i, 'is at the end'
-                            s += ' C ' + point(shapeControlPoints[lastPlottedSide][1]) + ' '
-                            j = i
-                            while (not shapePoints.has_key(j)) and j <= 5:
-                                j += 1
-                            s += point(shapeControlPoints[j][0]) + ' '
-                            s +=  point(shapePoints[j][0])
-                            
-                            s += ' L ' + point(shapePoints[i][0]) + point(shapePoints[i][1])
-                            
-                            s += ' C ' + point(shapeControlPoints[i][1]) + ' '
-                            s += point(shapeControlPoints[firstSide-1][0]) + ' '
-                            s +=  point(shapePoints[firstSide-1][0]) + ' '
-                            
+                            #must be the last face
+                            tilePoints += ' '.join([' C', point(shapeControlPoints[lastPlottedSide][1]),
+                                                  point(shapeControlPoints[i][0]),
+                                                  point(shapePoints[i][0]),
+                                                  'L', point(shapePoints[i][0]),
+                                                  point(shapePoints[i][1]),
+                                                  'C', point(shapeControlPoints[i][1]),
+                                                  point(shapeControlPoints[firstSide-1][0]),
+                                                  point(shapePoints[firstSide-1][0]), 'z'])
                         else:
                             #side must be 'normal' (not at the beginning or end)
-                            print 'face', i, 'is in the middle'
-                            
-                            s += ' C ' +  point(shapeControlPoints[lastPlottedSide][1] ) + ' '
-                            s += point(shapeControlPoints[i][0]) + ' '
-                            s += point(shapePoints[i][0]) + ' L '
-                            s += point(shapePoints[i][1])
-                            
+                            tilePoints += ' '.join([' C', point(shapeControlPoints[lastPlottedSide][1] ),
+                                                  point(shapeControlPoints[i][0]),
+                                                  point(shapePoints[i][0]), 'L',
+                                                  point(shapePoints[i][1])])
                             lastPlottedSide = i
                             if plotEndNext == 1: plotEndNext = 2
                             
-                    
-            tilePoints = s #do this to keep the above (more) readable
-            print tilePoints
             x, y = hexagon.cartesianCoordinates()
             self.tiles += [self.tileXml.format(points=tilePoints, x=x, y=y,
                                                tileName=hexagon.shape().name() + ' (' + str(len(hexagon.shape())) + ' sides)')]

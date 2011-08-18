@@ -107,9 +107,9 @@ class Shape(object):
         '''Return the vertices making up this shape'''
         points = {}
         controlPoints = {}
-        d1 = 5
-        d2 = 25
         r = self._radius
+        d1 = 0.15 * r
+        d2 = 3.25 * d1
         
         #two points on the edge of a hexagon, the top one and the next one along (clockwise)
         x1, y1 = 0, r
