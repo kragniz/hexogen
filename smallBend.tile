@@ -1,9 +1,9 @@
 [Tile Definition]
 Name=Small one way bend
 Color=yellowgreen
-Side-1=A
+Side-1=a
 Side-2=-
 Side-3=-
 Side-4=-
-Side-5=a
-Side-6=-
+Side-5=-
+Side-6=A

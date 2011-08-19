@@ -161,7 +161,7 @@ class SvgWriter(object):
                     if hexagon.shape().sides()[i].isdigit():
                         sideType = 0
                     else:
-                        if hexagon.shape().sides()[i].islower():
+                        if hexagon.shape().sides()[i].isupper():
                             sideType = 1
                         else:
                             sideType = 2
