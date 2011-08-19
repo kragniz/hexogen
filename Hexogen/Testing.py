@@ -115,6 +115,9 @@ class Test(object):
         
         p = Shape()
         p.loadFromFile('prang.tile')
+        
+        ss = Shape()
+        ss.loadFromFile('singleSide.tile')
 
         shapes = ShapeManager(h, b, s)
         a.hexagon(-2,0).addShape(h)
@@ -127,6 +130,7 @@ class Test(object):
         a.hexagon(4,0).addShape(p)
         a.hexagon(1,-1).addShape(p)
         a.hexagon(1,-1).shape().rotate(5)
+        a.hexagon(-1,1).addShape(ss)
         
         svg = SvgWriter()
         svg.offset(200,200)

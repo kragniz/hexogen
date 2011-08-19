@@ -1,9 +1,9 @@
 [Tile Definition]
 Name=prang thing
 color=blue
-Side-1=-
-Side-2=a
+Side-1=1
+Side-2=1
 Side-3=-
-Side-4=A
-Side-5=A
-Side-6=A
+Side-4=1
+Side-5=-
+Side-6=-

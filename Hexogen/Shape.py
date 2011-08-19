@@ -81,7 +81,7 @@ class Shape(object):
                 
             if data[i].lower().startswith('color'):
                 nonHexDigits = 0
-                hexDigits = '123456789ABCDEF'
+                hexDigits = '0123456789ABCDEF'
                 for c in data[i][6:].upper():
                     if c not in hexDigits:
                         nonHexDigits += 1
@@ -94,15 +94,6 @@ class Shape(object):
                         
             if data[i].lower().startswith('side-'):
                 foundSides[int(data[i][5])] = data[i][ data[i].index('=') + 1 :].strip()
-                
-        '''for k in foundSides:
-            value = foundSides[k]
-            if value == 'none': foundSides[k] = 0
-            elif value == 'double': foundSides[k] = 2
-            elif value == 'out': foundSides[k] = 1
-            elif value == 'in': foundSides[k] = -1
-            else:
-                foundSides[k] = 0 #assume it's blank'''
         
         self._matchableSides = tuple(foundSides.values())
         
@@ -128,8 +119,8 @@ class Shape(object):
         controlPoints = {}
         r = self._radius
         d1 = 0.15 * r #diameter of the extrusions from the shape
-        d2 = 2 * d1 #length of the control points
-        d3 = 6 #length of triangle extending out of one-way sides
+        d2 = 3 * d1 #length of the control points
+        d3 = r*0.15 #length of triangle extending out of one-way sides
         
         #two points on the edge of a hexagon, the top one and the next one along (clockwise)
         x1, y1 = 0, r

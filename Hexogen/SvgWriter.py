@@ -92,8 +92,7 @@ class SvgWriter(object):
   </g>
 </svg>'''
         
-        self.hexagonXml = '''        <path id="Hexagon {pathNumber}" class= "{hexagonType}" d="{points}"/>
-'''
+        self.hexagonXml = '''        <path id="Hexagon {pathNumber}" class= "{hexagonType}" d="{points}"/>\n'''
         self.tileXml = '''        <g transform="translate({x:0.2f}, {y:0.2f})">
           <path id="{tileName}"
                 class= "shape"{optionalColour}
@@ -101,8 +100,7 @@ class SvgWriter(object):
           <text font-size="3">
             {tileName}
           </text>
-        </g>
-'''
+        </g>\n'''
         self.hexagons = []
         self.tiles = []
         
@@ -141,6 +139,7 @@ class SvgWriter(object):
 
     def addHexagon(self, hexagon):
         '''Add a hexagon to the SVG file'''
+        #FIXME If the shape has only one side, add some extra prongs to give it some volume
         if hexagon.hasShape():
             hexagonType = 'blue'
         else:
