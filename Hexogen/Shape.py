@@ -145,7 +145,7 @@ class Shape(object):
         print self._matchableSides
         
         if self._matchableSides[0] != '-':
-            #main two points, with the 
+            #main two points (m1, m2), with the two points for sticky-in/out bits (m3, m4)
             m1, m2, m3, m4 = (x1, y1), (x2, y2), (xso, yso), (xsi, ysi)
             #control points for some nice smooth lines
             xc1, yc1 = m1[0] - d2 * sin(pi/6),  m1[1] - d2 * cos(pi/6)
