@@ -75,6 +75,7 @@ class SvgWriter(object):
         fill: #FF4040;
         stroke: black;
         stroke-width: 1.5;
+        stroke-linejoin:round;
       }}      
       
       text {{
