@@ -3,3 +3,6 @@
 #also backup files
 *~
 *.svg
+MANIFEST
+dist/*
+build/*

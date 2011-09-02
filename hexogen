@@ -62,7 +62,7 @@
 ##      + Create class TODO
 ##      + Defined by the edge of the area. Hash this and add it to the table
 
-from hexogen import Testing
+from Hexogen import Testing
         
 if __name__ == '__main__':
     Testing.Test().shapePoints()
