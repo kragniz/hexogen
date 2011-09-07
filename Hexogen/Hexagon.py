@@ -110,9 +110,10 @@ class Hexagon(object):
         
         
     def addShape(self, shape):
-        '''Attach a shape to this hexagon tile. Makes a copy of the shape.'''
+        '''Attach a shape to this hexagon tile. Makes a copy of the shape. Returns the new shape'''
         self._shape = copy(shape) #Copy it (using copy.copy())
         self._shape.setRadius(self._radius)
+        return self._shape
         
         
     def removeShape(self):

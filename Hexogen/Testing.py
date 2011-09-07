@@ -141,6 +141,47 @@ class Test(object):
         
         print 'Done'
         
+    def illustrateProblem(self):
+        a = ArrayOfHexagons()
+        a.setRadius(40)
+        a.addHexagon(0, 0)
+        a.populate(6)
+        
+        h = Shape()
+        h.loadFromFile('hexagon.tile')
+
+        b = Shape()
+        b.loadFromFile('smallBend.tile')
+
+        s = Shape()
+        s.loadFromFile('simple.tile')
+        
+        t = Shape()
+        t.loadFromFile('triangle.tile')
+        
+        c = Shape()
+        c.loadFromFile('cross.tile')
+        
+        p = Shape()
+        p.loadFromFile('prang.tile')
+        
+        ss = Shape()
+        ss.loadFromFile('singleSide.tile')
+        
+        a.hexagon(-12,0).addShape(h)
+        a.hexagon(-8,0).addShape(b)
+        a.hexagon(-4,0).addShape(s)
+        a.hexagon(0,0).addShape(t)
+        a.hexagon(4,0).addShape(c)
+        a.hexagon(8,0).addShape(p)
+        a.hexagon(12,0).addShape(ss)
+        svg = SvgWriter()
+        svg.offset(400,400)
+        for coordinates in a:
+            svg.addHexagon(a.hexagon(coordinates[0], coordinates[1]))
+        svg.write('hexagons.svg')
+        
+        
         
 if __name__ == '__main__':
     Test().shapePoints()

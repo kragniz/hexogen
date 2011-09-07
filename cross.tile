@@ -1,8 +1,8 @@
 [Tile Definition]
 Name=cross
-Side-1=1
+Side-1=A
 Side-2=-
-Side-3=1
-Side-4=1
+Side-3=a
+Side-4=a
 Side-5=-
-Side-6=1
+Side-6=A

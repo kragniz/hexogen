@@ -214,7 +214,7 @@ class SvgWriter(object):
                 colourStyle = ''
                 
             self.tiles += [self.tileXml.format(points=tilePoints, x=x, y=y,
-                                               tileName=hexagon.shape().name() + ' (' + str(len(hexagon.shape())) + ' sides)',
+                                               tileName='',#hexagon.shape().name() + ' (' + str(len(hexagon.shape())) + ' sides)', #FIXME uncomment this bit out, make it a choice
                                                optionalColour = colourStyle)]
             
         # round them floats! (2 d.p.)

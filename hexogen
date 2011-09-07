@@ -65,4 +65,4 @@
 from Hexogen import Testing
         
 if __name__ == '__main__':
-    Testing.Test().shapePoints()
+    Testing.Test().illustrateProblem()
