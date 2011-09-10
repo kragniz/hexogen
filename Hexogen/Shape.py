@@ -106,6 +106,7 @@ class Shape(object):
             for j in range(len(sides)-1):
                 sides[j+1] = self._matchableSides[j]
             self._matchableSides = tuple(sides)
+        return self
             
             
     def setRadius(self, radius):
