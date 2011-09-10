@@ -45,13 +45,13 @@ class Test(object):
         #print a.hexagon(-2, 0).distanceFrom(0, 0)
 
         h = Shape()
-        h.loadFromFile('hexagon.tile')
+        h.loadFromFile('sampleTiles/hexagon.tile')
 
         b = Shape()
-        b.loadFromFile('smallBend.tile')
+        b.loadFromFile('sampleTiles/smallBend.tile')
 
         s = Shape()
-        s.loadFromFile('simple.tile')
+        s.loadFromFile('sampleTiles/simple.tile')
 
         shapes = ShapeManager(h, b, s)
 
@@ -99,25 +99,25 @@ class Test(object):
         a.populate(2)
 
         h = Shape()
-        h.loadFromFile('hexagon.tile')
+        h.loadFromFile('sampleTiles/hexagon.tile')
 
         b = Shape()
-        b.loadFromFile('smallBend.tile')
+        b.loadFromFile('sampleTiles/smallBend.tile')
 
         s = Shape()
-        s.loadFromFile('simple.tile')
+        s.loadFromFile('sampleTiles/simple.tile')
         
         t = Shape()
-        t.loadFromFile('triangle.tile')
+        t.loadFromFile('sampleTiles/triangle.tile')
         
         c = Shape()
-        c.loadFromFile('cross.tile')
+        c.loadFromFile('sampleTiles/cross.tile')
         
         p = Shape()
-        p.loadFromFile('prang.tile')
+        p.loadFromFile('sampleTiles/prang.tile')
         
         ss = Shape()
-        ss.loadFromFile('singleSide.tile')
+        ss.loadFromFile('sampleTiles/singleSide.tile')
 
         shapes = ShapeManager(h, b, s)
         a.hexagon(-2,0).addShape(h)
@@ -148,25 +148,25 @@ class Test(object):
         a.populate(6)
         
         h = Shape()
-        h.loadFromFile('hexagon.tile')
+        h.loadFromFile('sampleTiles/hexagon.tile')
 
         b = Shape()
-        b.loadFromFile('smallBend.tile')
+        b.loadFromFile('sampleTiles/smallBend.tile')
 
         s = Shape()
-        s.loadFromFile('simple.tile')
+        s.loadFromFile('sampleTiles/simple.tile')
         
         t = Shape()
-        t.loadFromFile('triangle.tile')
+        t.loadFromFile('sampleTiles/triangle.tile')
         
         c = Shape()
-        c.loadFromFile('cross.tile')
+        c.loadFromFile('sampleTiles/cross.tile')
         
         p = Shape()
-        p.loadFromFile('prang.tile')
+        p.loadFromFile('sampleTiles/prang.tile')
         
         ss = Shape()
-        ss.loadFromFile('singleSide.tile')
+        ss.loadFromFile('sampleTiles/singleSide.tile')
         
         a.hexagon(-12,0).addShape(h)
         a.hexagon(-8,0).addShape(b)
